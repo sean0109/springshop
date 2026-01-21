@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springshop.mapper.MemberMapper">
+
+    <insert id="save" parameterType="Member">
+        INSERT
+        INTO
+            MEMBER (ID
+                   , NAME
+                   , CITY
+                   , STREET
+                   , ZIPCODE
+                )
+        VALUES (
+                     member_seq.NEXTVAL
+                   , #{name}
+                   , #{address.city}
+                   , #{address.street}
+                   , #{address.zipcode}
+               )
+    </insert>
+
+    <select id="findById" parameterType="Long" resultMap="memberResultMap">
+        SELECT
+            ID
+             , NAME
+             , CITY
+             , STREET
+             , ZIPCODE
+        FROM
+            MEMBER
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="memberResultMap">
+        SELECT
+            ID
+             , NAME
+             , CITY
+             , STREET
+             , ZIPCODE
+        FROM
+            MEMBER
+    </select>
+
+    <select id="findByName" parameterType="String" resultMap="memberResultMap">
+        SELECT
+            ID
+             , NAME
+             , CITY
+             , STREET
+             , ZIPCODE
+        FROM
+            MEMBER
+        WHERE
+            NAME = #{name}
+    </select>
+
+    <resultMap id="memberResultMap" type="Member">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <association property="address" javaType="springshop.domain.Address">
+            <result property="city" column="city"/>
+            <result property="street" column="street"/>
+            <result property="zipcode" column="zipcode"/>
+        </association>
+    </resultMap>
+
+</mapper>
