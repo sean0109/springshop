@@ -1,8 +1,8 @@
 package springshop.controller;
 
 import jakarta.validation.Valid;
-import springshop.domain.Address;
-import springshop.domain.Member;
+import springshop.model.Address;
+import springshop.model.Member;
 import springshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -58,7 +58,6 @@ public class MemberController {
         // 리스트로 받아오기
         List<Member> memberList = memberService.findMembers();
         model.addAttribute("members", memberList);
-
         return "members/memberList";
     }
 }

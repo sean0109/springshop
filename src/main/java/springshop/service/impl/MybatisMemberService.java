@@ -1,6 +1,6 @@
 package springshop.service.impl;
 
-import springshop.domain.Member;
+import springshop.model.Member;
 import springshop.mapper.MemberMapper;
 import springshop.service.MemberService;
 import lombok.RequiredArgsConstructor;

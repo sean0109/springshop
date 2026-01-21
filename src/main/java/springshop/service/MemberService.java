@@ -1,6 +1,6 @@
 package springshop.service;
 
-import springshop.domain.Member;
+import springshop.model.Member;
 
 import java.util.List;
 

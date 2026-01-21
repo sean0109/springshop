@@ -1,6 +1,6 @@
 package springshop.mapper;
 
-import springshop.domain.Member;
+import springshop.model.Member;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
