@@ -34,15 +34,15 @@
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
-                <td>
+                <!--<td>
                     <a href="#" th:href="@{/items/{id}/edit (id=${item.itemId})}" class="btn btn-primary" role="button">수정</a>
-                </td>
+                </td>-->
 
                 <!--서버에 전달하는 키값 파라미터 전송이 안보이게 처리-->
-                <!--<td>
+                <td>
                     <a th:onclick="|mod(${item.itemId})|" class="btn btn-primary" role="button">수정</a>
-                    <a th:href="|javascript:mod(${item.itemId})|" class="btn btn-primary" role="button">수정</a>
-                </td>-->
+                    <!--<a th:href="|javascript:mod(${item.itemId})|" class="btn btn-primary" role="button">수정</a>-->
+                </td>
             </tr>
             </tbody>
         </table>

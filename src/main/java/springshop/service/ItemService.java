@@ -11,6 +11,6 @@ public interface ItemService {
     // 상품 전체 조회
     List<Item> findAllItems();
     // 상품 하나 조회
-    Item findItemById(long id);
+    Item findItemById(Long id);
 
 }

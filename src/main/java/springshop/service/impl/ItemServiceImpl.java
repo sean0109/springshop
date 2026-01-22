@@ -32,7 +32,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item findItemById(long id) {
-        return null;
+    public Item findItemById(Long id) {
+        return itemMapper.findById(id);
     }
 }

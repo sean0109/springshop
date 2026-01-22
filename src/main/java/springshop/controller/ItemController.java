@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import springshop.dto.ItemForm;
 import springshop.model.ItemType;
 import springshop.model.Item;
@@ -25,7 +26,7 @@ public class ItemController {
     @GetMapping("/items/new")
     public String createForm(Model model) {
         model.addAttribute("itemForm", new ItemForm());
-        return "items/createItemForm";
+        return "items/createItemForm";  // 신규저장, 수정 통합 폼
     }
 
     // 저장
@@ -42,6 +43,7 @@ public class ItemController {
         ItemType itemType = ItemType.from(form.getDtype());
 
         Item item = Item.builder()
+                .itemId(form.getItemId())   // null 이면 신규, 값이 있으면 신규등록
                 .name(form.getName())
                 .etc(form.getEtc())
                 .price(form.getPrice())
@@ -64,6 +66,29 @@ public class ItemController {
         model.addAttribute("items", list);
 
         return "items/itemList";
+    }
+
+    // 수정
+    @PostMapping("/items/modify")
+    public String modifyItem(@RequestParam Long itemId, Model model) {
+
+        log.info("id {}", itemId);
+
+        Item item = itemService.findItemById(itemId);
+
+        ItemForm itemForm = ItemForm.builder()
+                .name(item.getName())
+                .itemId(item.getItemId())
+                .dtype(item.getDtype())
+                .author(item.getAuthor())
+                .isbn(item.getIsbn())
+                .price(item.getPrice())
+                .stockQuantity(item.getStockQuantity())
+                .build();
+
+        model.addAttribute("itemForm", itemForm);
+
+        return "items/createItemForm";
     }
 
 }
