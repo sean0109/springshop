@@ -10,7 +10,7 @@ public interface MemberMapper {
 
     void save(Member member);
 
-    Member findById(Long id);
+    Member findById(Long memberId);
 
     List<Member> findAll();
 

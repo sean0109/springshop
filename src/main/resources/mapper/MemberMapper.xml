@@ -7,7 +7,7 @@
     <insert id="save" parameterType="Member">
         INSERT
         INTO
-            MEMBER (ID
+            MEMBER (MEMBER_ID
                    , NAME
                    , CITY
                    , STREET
@@ -24,7 +24,7 @@
 
     <select id="findById" parameterType="Long" resultMap="memberResultMap">
         SELECT
-            ID
+            MEMBER_ID
              , NAME
              , CITY
              , STREET
@@ -32,12 +32,12 @@
         FROM
             MEMBER
         WHERE
-            id = #{id}
+            MEMBER_ID = #{memberId}
     </select>
 
     <select id="findAll" resultMap="memberResultMap">
         SELECT
-            ID
+            MEMBER_ID
              , NAME
              , CITY
              , STREET
@@ -48,7 +48,7 @@
 
     <select id="findByName" parameterType="String" resultMap="memberResultMap">
         SELECT
-            ID
+            MEMBER_ID
              , NAME
              , CITY
              , STREET
@@ -60,7 +60,7 @@
     </select>
 
     <resultMap id="memberResultMap" type="Member">
-        <id property="id" column="id"/>
+        <id property="memberId" column="memberId"/>
         <result property="name" column="name"/>
         <association property="address" javaType="springshop.model.Address">
             <result property="city" column="city"/>
