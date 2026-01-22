@@ -1,6 +1,7 @@
 package springshop.controller;
 
 import jakarta.validation.Valid;
+import springshop.dto.MemberForm;
 import springshop.model.Address;
 import springshop.model.Member;
 import springshop.service.MemberService;
@@ -24,7 +25,6 @@ public class MemberController {
 
         // form 객체 화면과 매핑
         model.addAttribute("memberForm", new MemberForm());
-
         return "members/createMemberForm";
     }
 

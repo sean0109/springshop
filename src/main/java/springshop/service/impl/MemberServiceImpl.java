@@ -2,20 +2,17 @@ package springshop.service.impl;
 
 import springshop.model.Member;
 import springshop.mapper.MemberMapper;
-import springshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 // Mybatis를 이용한 비지니스 로직
-@Primary
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MybatisMemberService implements MemberService {
+public class MemberServiceImpl implements springshop.service.MemberService {
 
     private final MemberMapper memberMapper;
 

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}" />
+<body>
+<form th:action="@{/items/modify}" method="post" id="itemIdForm">
+    <input type="hidden" name="itemId" id="itemId"/>
+</form>
+<script>
+
+    function mod(id) {
+        // hidden input에 값 세팅
+        document.getElementById("itemId").value = id;
+        // form submit
+        document.getElementById("itemIdForm").submit();
+    }
+
+</script>
+<div class="container">
+    <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>재고수량</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.itemId}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.stockQuantity}"></td>
+                <td>
+                    <a href="#" th:href="@{/items/{id}/edit (id=${item.itemId})}" class="btn btn-primary" role="button">수정</a>
+                </td>
+
+                <!--서버에 전달하는 키값 파라미터 전송이 안보이게 처리-->
+                <!--<td>
+                    <a th:onclick="|mod(${item.itemId})|" class="btn btn-primary" role="button">수정</a>
+                    <a th:href="|javascript:mod(${item.itemId})|" class="btn btn-primary" role="button">수정</a>
+                </td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"/>
+</div> <!-- /container -->
+</body>
+</html>
