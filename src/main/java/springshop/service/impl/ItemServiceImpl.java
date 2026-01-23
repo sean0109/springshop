@@ -35,4 +35,9 @@ public class ItemServiceImpl implements ItemService {
     public Item findItemById(Long id) {
         return itemMapper.findById(id);
     }
+
+    @Override
+    public List<Item> findItemByName(String name) {
+        return itemMapper.findItemByName(name);
+    }
 }

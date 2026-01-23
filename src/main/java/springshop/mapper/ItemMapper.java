@@ -11,5 +11,6 @@ public interface ItemMapper {
     Item findById(Long id);
     List<Item> findAll();
     Item findByName(String name);
+    List<Item> findItemByName(String name);
 
 }

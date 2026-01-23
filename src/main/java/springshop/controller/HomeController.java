@@ -33,15 +33,11 @@ public class HomeController {
 
     @PostMapping("/")
     @ResponseBody
-    public String search( @RequestBody Map<String, String> body) {
+    public List<Item> search( @RequestBody Map<String, String> body) {
         log.info(body.get("name"));
         log.info(body.get("price"));
         log.info(body.get("stockQuantity"));
 
-        
-
-
-
-        return null;
+        return itemService.findItemByName(body.get("name"));
     }
 }

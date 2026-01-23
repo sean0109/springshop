@@ -4,254 +4,257 @@
     <title>Hello Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding-bottom: 60px;
-        }
-
-        /* Header */
-        .header {
-            background-color: #fff;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .logo span:nth-child(1) { color: #ff6b00; }
-        .logo span:nth-child(2) { color: #00a8ff; }
-        .logo span:nth-child(3) { color: #00d084; }
-
-        .menu-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .menu-btn {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background-color 0.2s;
-        }
-
-        .menu-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            margin-top: 4px;
-            background-color: #fff;
-            min-width: 160px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-radius: 8px;
-            z-index: 101;
-            overflow: hidden;
-        }
-
-        .dropdown-content.show {
-            display: block;
-        }
-
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.2s;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* Search Bar */
-        .search-container {
-            padding: 12px 16px;
-            background-color: #fff;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background-color: #f5f5f5;
-            border: 2px solid #333;
-            border-radius: 24px;
-            padding: 10px 16px;
-        }
-
-        .search-box input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            outline: none;
-            font-size: 14px;
-            margin-left: 8px;
-        }
-
-        .search-box input::placeholder {
-            color: #999;
-        }
-
-        .search-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Banner */
-        .banner-container {
-            position: relative;
-            margin: 16px;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .banner-slide {
-            display: none;
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .banner-slide.active {
-            display: flex;
-        }
-
-        .banner-indicators {
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-        }
-
-        .indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255,255,255,0.5);
-            transition: background-color 0.3s;
-        }
-
-        .indicator.active {
-            background-color: rgba(255,255,255,1);
-        }
-
-        /* Product Grid */
-        .products-container {
-            padding: 0 16px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #333;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .product-card {
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .product-image {
-            width: 100%;
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 14px;
-        }
-
-        .product-info {
-            padding: 12px;
-        }
-
-        .product-name {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 4px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .product-price {
-            font-size: 16px;
-            font-weight: bold;
-            color: #ff6b00;
-        }
-
-        /* Responsive */
-        @media (min-width: 768px) {
-            .product-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .product-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-    </style>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #f5f5f5;
+        padding-bottom: 60px;
+    }
+
+    /* Header */
+    .header {
+        background-color: #fff;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .logo span:nth-child(1) { color: #ff6b00; }
+    .logo span:nth-child(2) { color: #00a8ff; }
+    .logo span:nth-child(3) { color: #00d084; }
+
+    .menu-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .menu-btn {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background-color 0.2s;
+    }
+
+    .menu-btn:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        margin-top: 4px;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 8px;
+        z-index: 101;
+        overflow: hidden;
+    }
+
+    .dropdown-content.show {
+        display: block;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Search Bar */
+    .search-container {
+        padding: 12px 16px;
+        background-color: #fff;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background-color: #f5f5f5;
+        border: 2px solid #333;
+        border-radius: 24px;
+        padding: 10px 16px;
+    }
+
+    .search-box input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 16px;
+        margin-left: 8px;
+    }
+
+    .search-box input::placeholder {
+        color: #999;
+    }
+
+    .search-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Banner */
+    .banner-container {
+        position: relative;
+        margin: 16px;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .banner-slide {
+        display: none;
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .banner-slide.active {
+        display: flex;
+    }
+
+    .banner-indicators {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+    }
+
+    .indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: rgba(255,255,255,0.5);
+        transition: background-color 0.3s;
+    }
+
+    .indicator.active {
+        background-color: rgba(255,255,255,1);
+    }
+
+    /* Product Grid */
+    .products-container {
+        padding: 0 16px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: #333;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .product-card {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .product-image {
+        width: 100%;
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 14px;
+    }
+
+    .product-info {
+        padding: 12px;
+    }
+
+    .product-name {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .product-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #ff6b00;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+        .product-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .product-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+</style>
 <body>
     <!--post form 전송-->
     <!--<form action="/" method="POST">
@@ -260,7 +263,7 @@
     <!-- Header -->
     <div class="header">
         <div class="logo">
-            <span>hello</span><span> </span><span>shop</span>
+            <span>뜌뜌</span><span> </span><span>빡스</span>
         </div>
         <div class="menu-buttons">
             <!-- User Menu -->
@@ -279,7 +282,7 @@
                 <div id="adminMenu" class="dropdown-content">
                     <a href="/members">회원 목록</a>
                     <a href="/items">상품 목록</a>
-                    <a href="/">상품 등록</a>
+                    <a href="/items/new">상품 등록</a>
                 </div>
             </div>
         </div>
@@ -299,14 +302,11 @@
 
     <!-- Banner -->
     <div class="banner-container">
-        <div class="banner-slide active" data-slide="0">
-            <div>NO IMAGE<br/>광고 배너 1</div>
+        <div class="banner-slide active" data-slide="0" style="background-image: url('/images/banner1.jpg');">
         </div>
-        <div class="banner-slide" data-slide="1">
-            <div>NO IMAGE<br/>광고 배너 2</div>
+        <div class="banner-slide" data-slide="1" style="background-image: url('/images/banner2.jpg');">
         </div>
-        <div class="banner-slide" data-slide="2">
-            <div>NO IMAGE<br/>광고 배너 3</div>
+        <div class="banner-slide" data-slide="2" style="background-image: url('/images/banner3.jpg');">
         </div>
         <div class="banner-indicators">
             <div class="indicator active" data-indicator="0"></div>
@@ -318,7 +318,6 @@
     <!-- Products -->
     <div class="products-container">
         <h2 class="section-title">추천 상품</h2>
-
 
         <div class="product-grid">
             <div th:each="item : ${items}" class="product-card">
@@ -332,6 +331,21 @@
     </div>
 
     <script>
+
+        // document Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            searchItem(""); // 최초 모두 검색
+        });
+
+        // action
+        function doAction(cmd, key) {
+            if (cmd === "detail") {
+                console.log("상품 key : " + key);
+            }
+        }
+
+
+
         // Dropdown toggle
         function toggleDropdown(menuId) {
             const menu = document.getElementById(menuId);
@@ -389,6 +403,11 @@
                 console.log('검색어:', searchTerm);
                 // TODO: Backend search implementation
                 searchItem(searchTerm);
+                // 모바일 키보드 내리기 및 화면 원위치
+                this.blur();
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                }, 100);
             }
         });
 
@@ -397,7 +416,7 @@
            // let searchName = document.getElementById('searchInput').value;
            // document.getElementById("searchName").value = searchName;
 
-             /*fetch('/', {
+             fetch('/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -408,20 +427,38 @@
                     stockQuantity: 5
                 })
             }).then(res => res.json())
-                .then(data => console.log(data))
-                .catch(err => console.error(err));*/
+                .then(data => callback("itemList", data))
+                .catch(err => console.error(err));
         }
 
-        async function fetchA() {
-            console.log('fetchA()');
-        }
 
-        async function fetchB() {
-            console.log('fetchB()');
-        }
+        const callback = (cmd, data) => {
+            if (cmd === "itemList") {
+                const productGrid = document.querySelector('.product-grid');
 
-        await fetchA();
-        await fetchB();
+                if (!data || data.length === 0) {
+                    productGrid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📦</div>
+                            <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 8px;">등록된 상품이 없습니다</div>
+                            <div style="font-size: 14px; color: #999;">검색 조건을 변경해보세요</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                productGrid.innerHTML = data.map(item => `
+                    <div class="product-card" onclick="doAction('detail', ${item.itemId})">
+                        <div class="product-image">NO IMAGE</div>
+                        <div class="product-info">
+                            <div class="product-name">${item.name}</div>
+                            <div class="product-price">${item.price}원</div>
+                        </div>
+                    </div>
+                `).join('');    // join 함수를 쓰지 않으면, 배열 형태로 들어감
+            }
+        }
     </script>
+
 </body>
 </html>

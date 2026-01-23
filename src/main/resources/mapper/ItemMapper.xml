@@ -68,7 +68,7 @@
             ITEM
     </select>
 
-    <select id="findByName" parameterType="String" resultType="Item">
+    <select id="findItemByName" parameterType="String" resultType="Item">
         SELECT
             ITEM_ID
              , NAME
@@ -83,7 +83,9 @@
              , ETC
         FROM
             ITEM
-        WHERE NAME = #{name}
+        <if test="name != null and name != '' ">
+            WHERE NAME LIKE '%' || #{name} || '%'
+        </if>
     </select>
 
 </mapper>
