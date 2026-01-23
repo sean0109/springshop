@@ -1,31 +1,427 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: header}">
-    <title>Hello</title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding-bottom: 60px;
+        }
+
+        /* Header */
+        .header {
+            background-color: #fff;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo span:nth-child(1) { color: #ff6b00; }
+        .logo span:nth-child(2) { color: #00a8ff; }
+        .logo span:nth-child(3) { color: #00d084; }
+
+        .menu-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .menu-btn {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+        }
+
+        .menu-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 4px;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            z-index: 101;
+            overflow: hidden;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 12px 16px;
+            background-color: #fff;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: 2px solid #333;
+            border-radius: 24px;
+            padding: 10px 16px;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .search-box input::placeholder {
+            color: #999;
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Banner */
+        .banner-container {
+            position: relative;
+            margin: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .banner-slide {
+            display: none;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .banner-slide.active {
+            display: flex;
+        }
+
+        .banner-indicators {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            transition: background-color 0.3s;
+        }
+
+        .indicator.active {
+            background-color: rgba(255,255,255,1);
+        }
+
+        /* Product Grid */
+        .products-container {
+            padding: 0 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-name {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff6b00;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />  <!-- import 해서 씀-->
-    <div class="jumbotron">
-        <h1>HELLO SHOP</h1>
-        <p class="lead">회원 기능</p>
-        <p>
-            <a class="btn btn-lg btn-secondary" href="/members/new">회원 가입</a>
-            <a class="btn btn-lg btn-secondary" href="/members">회원 목록</a>
-        </p>
-        <p class="lead">상품 기능</p>
-        <p>
-            <a class="btn btn-lg btn-dark" href="/items/new">상품 등록</a>
-            <a class="btn btn-lg btn-dark" href="/items">상품 목록</a>
-        </p>
-        <p class="lead">주문 기능</p>
-        <p>
-            <a class="btn btn-lg btn-info" href="/order">상품 주문</a>
-            <a class="btn btn-lg btn-info" href="/orders">주문 내역</a>
-        </p>
+    <!--post form 전송-->
+    <!--<form action="/" method="POST">
+        <input type="hidden" id="searchName" name="searchName" value="">
+    </form>-->
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <span>hello</span><span> </span><span>shop</span>
+        </div>
+        <div class="menu-buttons">
+            <!-- User Menu -->
+            <div class="dropdown">
+                <button class="menu-btn" onclick="toggleDropdown('userMenu')">메뉴 ▼</button>
+                <div id="userMenu" class="dropdown-content">
+                    <a href="/members/new">회원 가입</a>
+                    <a href="/orders">주문 내역</a>
+                    <a href="/order">상품 주문</a>
+                </div>
+            </div>
+
+            <!-- Admin Menu -->
+            <div class="dropdown">
+                <button class="menu-btn" onclick="toggleDropdown('adminMenu')">관리자 ▼</button>
+                <div id="adminMenu" class="dropdown-content">
+                    <a href="/members">회원 목록</a>
+                    <a href="/items">상품 목록</a>
+                    <a href="/">상품 등록</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div th:replace="~{fragments/footer :: footer}" />
-</div> <!-- /container -->
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <label for="searchInput"></label>
+            <input type="text" placeholder="상품을 검색하세요!" id="searchInput"/>
+        </div>
+    </div>
+
+    <!-- Banner -->
+    <div class="banner-container">
+        <div class="banner-slide active" data-slide="0">
+            <div>NO IMAGE<br/>광고 배너 1</div>
+        </div>
+        <div class="banner-slide" data-slide="1">
+            <div>NO IMAGE<br/>광고 배너 2</div>
+        </div>
+        <div class="banner-slide" data-slide="2">
+            <div>NO IMAGE<br/>광고 배너 3</div>
+        </div>
+        <div class="banner-indicators">
+            <div class="indicator active" data-indicator="0"></div>
+            <div class="indicator" data-indicator="1"></div>
+            <div class="indicator" data-indicator="2"></div>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="products-container">
+        <h2 class="section-title">추천 상품</h2>
+
+
+        <div class="product-grid">
+            <div th:each="item : ${items}" class="product-card">
+                <div class="product-image">NO IMAGE</div>
+                <div class="product-info">
+                    <div class="product-name" th:text="${item.name}"></div>
+                    <div class="product-price" th:text="${item.price}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dropdown toggle
+        function toggleDropdown(menuId) {
+            const menu = document.getElementById(menuId);
+            const allMenus = document.querySelectorAll('.dropdown-content');
+
+            // Close all other menus
+            allMenus.forEach(m => {
+                if (m.id !== menuId) {
+                    m.classList.remove('show');
+                }
+            });
+
+            // Toggle current menu
+            menu.classList.toggle('show');
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-btn')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            }
+        }
+
+        // Banner auto-rotate with setInterval
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+
+            // Show current slide
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Auto-rotate every 3 seconds
+        setInterval(nextSlide, 3000);
+
+        // Search functionality (placeholder for backend implementation)
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value;
+                console.log('검색어:', searchTerm);
+                // TODO: Backend search implementation
+                searchItem(searchTerm);
+            }
+        });
+
+        // 비동기로 구현
+        function searchItem(searchTerm) {
+           // let searchName = document.getElementById('searchInput').value;
+           // document.getElementById("searchName").value = searchName;
+
+             /*fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: searchTerm,
+                    price: 10000,
+                    stockQuantity: 5
+                })
+            }).then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => console.error(err));*/
+        }
+
+        async function fetchA() {
+            console.log('fetchA()');
+        }
+
+        async function fetchB() {
+            console.log('fetchB()');
+        }
+
+        await fetchA();
+        await fetchB();
+    </script>
 </body>
 </html>
