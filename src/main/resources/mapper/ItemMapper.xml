@@ -4,7 +4,7 @@
 
 <mapper namespace="springshop.mapper.ItemMapper">
 
-    <insert id="save" parameterType="Item">
+<!--    <insert id="save" parameterType="Item">
         MERGE INTO ITEM A
             USING (
                 SELECT #{itemId} AS ITEM_ID FROM DUAL
@@ -12,7 +12,7 @@
             ON (A.ITEM_ID = S.ITEM_ID)
             WHEN MATCHED THEN
                 UPDATE SET
-                     <!-- A.NAME = #{name} -->
+                     &lt;!&ndash; A.NAME = #{name} &ndash;&gt;
                       A.PRICE = #{price}
                     , A.STOCK_QUANTITY = #{stockQuantity}
                     , A.DTYPE = #{dtype}
@@ -31,6 +31,36 @@
                            item_seq.NEXTVAL, #{name}, #{price}, #{stockQuantity}, #{dtype},
                            #{author}, #{isbn}, #{director}, #{actor}, #{artist}, #{etc}
                        )
+    </insert>-->
+
+    <update id="updateItem" parameterType="Item">
+        UPDATE ITEM
+        SET
+            NAME = #{name},
+            PRICE = #{price},
+            STOCK_QUANTITY = #{stockQuantity},
+            DTYPE = #{dtype},
+            AUTHOR = #{author},
+            ISBN = #{isbn},
+            DIRECTOR = #{director},
+            ACTOR = #{actor},
+            ARTIST = #{artist},
+            ETC = #{etc}
+        WHERE ITEM_ID = #{itemId}
+    </update>
+
+    <insert id="insertItem" parameterType="Item">
+        <selectKey keyProperty="itemId" resultType="Long" order="BEFORE">
+            SELECT ITEM_SEQ.NEXTVAL
+        </selectKey>
+            INSERT INTO ITEM (
+                        ITEM_ID, NAME, PRICE, STOCK_QUANTITY, DTYPE,
+                        AUTHOR, ISBN, DIRECTOR, ACTOR, ARTIST, ETC
+                    )
+            VALUES (
+                    #{itemId}, #{name}, #{price}, #{stockQuantity}, #{dtype},
+                    #{author}, #{isbn}, #{director}, #{actor}, #{artist}, #{etc}
+                )
     </insert>
 
     <select id="findById" parameterType="Long" resultType="Item">

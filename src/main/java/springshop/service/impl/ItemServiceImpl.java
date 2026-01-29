@@ -22,7 +22,13 @@ public class ItemServiceImpl implements ItemService {
     public void saveItem(Item item) {
 
         Long itemId = item.getItemId();
-        itemMapper.save(item);
+
+        if (itemId != null) {
+            itemMapper.updateItem(item);
+        }else {
+            itemMapper.insertItem(item);
+        }
+
     }
 
     @Override

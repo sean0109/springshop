@@ -3,10 +3,12 @@ package springshop.dto;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ItemForm {
 
     private Long itemId;    // 키값
@@ -22,10 +24,6 @@ public class ItemForm {
     private String isbn;
     private String director;
     private String actor;
-
-    public ItemForm () {
-
-    }
 
     @Builder
     public ItemForm(Long itemId, String name, int price, int stockQuantity, String dtype, String artist, String etc, String author, String isbn, String director, String actor) {

@@ -72,8 +72,6 @@ public class ItemController {
     @PostMapping("/items/modify")
     public String modifyItem(@RequestParam Long itemId, Model model) {
 
-        log.info("id {}", itemId);
-
         Item item = itemService.findItemById(itemId);
 
         ItemForm itemForm = ItemForm.builder()

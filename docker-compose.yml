@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+# Oracle DB container
+  oracle-db:
+    container_name: springshop-oracle
+    image: gvenzl/oracle-free:latest
+    environment:
+      ORACLE_PASSWORD: oracle
+      APP_USER: springshop
+      APP_USER_PASSWORD: oracle
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    networks:
+      - springshop-network
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+# Spring Boot APP container
+  springshop-app:
+    container_name: springshop-app
+    build: .  # /Dockerfile 사용
+    environment:
+      SPRING_PROFILES_ACTIVE: docker  # application-docker.yml 파일 로드 지시
+      SPRING_DATASOURCE_URL: jdbc:p6spy:oracle:thin:@oracle-db:1521/FREEPDB1
+      SPRING_DATASOURCE_USERNAME: springshop
+      SPRING_DATASOURCE_PASSWORD: oracle
+    ports:
+      - "8090:8090"
+    # 실행 순서 제어, Oracle db 먼저 health check
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    networks:
+      - springshop-network
+    restart: unless-stopped
+
+networks:
+  springshop-network:
+    driver: bridge
+
+volumes:
+  oracle-data:
+    driver: local

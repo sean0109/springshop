@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springshop.mapper.OrderMapper">
+
+    <!-- Delivery 저장 -->
+    <insert id="insertDelivery" parameterType="Delivery">
+        <selectKey keyProperty="deliveryId" resultType="Long" order="BEFORE">
+            SELECT DELIVERY_SEQ.NEXTVAL
+        </selectKey>
+        INSERT INTO DELIVERY (
+            DELIVERY_ID
+            , STATUS
+            , CITY
+            , STREET
+            , ZIPCODE
+        ) VALUES (
+            #{deliveryId}
+            , #{status}
+            , #{deliveryAddress.city}
+            , #{deliveryAddress.street}
+            , #{deliveryAddress.zipcode}
+        )
+    </insert>
+
+    <!-- Order 저장 -->
+    <insert id="insertOrder" parameterType="Order">
+        <selectKey keyProperty="orderId" resultType="Long" order="BEFORE">
+            SELECT ORDERS_SEQ.NEXTVAL
+        </selectKey>
+        INSERT INTO ORDERS (
+            ORDER_ID
+            , MEMBER_ID
+            , DELIVERY_ID
+            , ORDERDATE
+            , STATUS
+        ) VALUES (
+            #{orderId}
+            , #{memberId}
+            , #{deliveryId}
+            , #{orderDate}
+            , #{status}
+        )
+    </insert>
+
+    <!-- Order 상태 업데이트 (주문 취소용) -->
+    <update id="updateOrderStatus">
+        UPDATE ORDERS
+        SET STATUS = #{status}
+        WHERE ORDER_ID = #{orderId}
+    </update>
+
+    <!-- Order 조회 -->
+    <select id="findById" parameterType="Long" resultType="Order">
+        SELECT
+            ORDER_ID
+            , MEMBER_ID
+            , DELIVERY_ID
+            , ORDERDATE
+            , STATUS
+        FROM ORDERS
+        WHERE ORDER_ID = #{orderId}
+    </select>
+
+    <!--Order Item 저장-->
+    <insert id="insertOrderItem" parameterType="OrderItem">
+        <selectKey keyProperty="orderItemId" resultType="Long" order="BEFORE">
+            SELECT ORDER_ITEM_SEQ.NEXTVAL
+        </selectKey>
+        INSERT INTO ORDER_ITEM (
+            ORDER_ITEM_ID
+            , ORDER_ID
+            , ITEM_ID
+            , ORDERPRICE
+            , COUNT
+        ) VALUES (
+            #{orderItemId}
+            , #{orderId}
+            , #{itemId}
+            , #{orderPrice}
+            , #{count}
+        )
+    </insert>
+
+    <!--Item 재고 수량 차감-->
+    <update id="decreaseStock">
+        UPDATE ITEM
+        SET STOCK_QUANTITY = STOCK_QUANTITY - #{quantity}
+        WHERE ITEM_ID = #{itemId}
+          AND STOCK_QUANTITY >= #{quantity}
+    </update>
+
+    <!--대표 상품을 포함한 주문 정보 리스트 가져오기-->
+    <select id="getOrdersList" resultType="map">
+        WITH FIRST_ORDER_ITEM AS (
+            SELECT
+                ORDER_ITEM_ID,
+                ORDER_ID,
+                ITEM_ID,
+                ORDERPRICE,
+                COUNT,
+                ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY ORDER_ITEM_ID ASC)
+   AS RNK
+            FROM ORDER_ITEM
+        )
+        SELECT
+            O.ORDER_ID,
+            O.MEMBER_ID,
+            O.ORDERDATE,
+            O.STATUS AS ORDER_STATUS,
+            CASE O.STATUS
+                WHEN 'READY' THEN '접수대기'
+                WHEN 'CONFIRMED' THEN '접수완료'
+                WHEN 'CANCELED' THEN '주문취소'
+                END AS ORDER_STATUS_NAME,
+            D.STATUS AS DELIVERY_STATUS,
+            D.CITY || ' ' || D.STREET AS ADDRESS,
+            M.NAME AS MEMBER_NAME,
+            I.NAME AS ITEM_NAME,
+            OI.ORDERPRICE,
+            OI.COUNT
+        FROM ORDERS O
+                 INNER JOIN DELIVERY D ON O.DELIVERY_ID = D.DELIVERY_ID
+                 INNER JOIN MEMBER M ON O.MEMBER_ID = M.MEMBER_ID
+                 INNER JOIN FIRST_ORDER_ITEM OI ON O.ORDER_ID = OI.ORDER_ID AND OI.RNK = 1
+                 INNER JOIN ITEM I ON OI.ITEM_ID = I.ITEM_ID
+        <where>
+            <if test="memberName != null and memberName != ''">
+                AND M.NAME LIKE '%' || #{memberName} || '%'
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND O.STATUS = #{orderStatus}
+            </if>
+        </where>
+        ORDER BY O.ORDERDATE DESC
+    </select>
+</mapper>

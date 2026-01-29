@@ -1,0 +1,23 @@
+# 기본 설정만 제공.
+
+# Git 관련
+.git
+.gitattributes
+.gitignore
+
+# 현재 로컬 환경에서 존재하는 빌드 결과물 (Docker 에서 빌드를 새로 해서 만들것이므로 불필요)
+build/
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# Gradle 캐시 파일
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# 문서 파일
+*.md
+LICENSE
+CLAUDE.md

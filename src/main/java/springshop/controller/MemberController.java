@@ -2,6 +2,7 @@ package springshop.controller;
 
 import jakarta.validation.Valid;
 import springshop.dto.MemberForm;
+import springshop.exception.member.MemberSaveException;
 import springshop.model.Address;
 import springshop.model.Member;
 import springshop.service.MemberService;
@@ -47,7 +48,18 @@ public class MemberController {
                 .address(address)
                 .build();
 
-        memberService.join(member);
+       try {
+            memberService.join(member);
+        } catch (MemberSaveException e) {
+            // 중복 회원 에러 메시지를 name 필드에 추가
+            result.rejectValue("name", "duplicate", e.getMessage());
+            result.reject("duplicateData", e.getMemberId());
+            return "members/createMemberForm";
+        } catch (Exception e) {
+            // 기타 예외 처리
+            result.reject("error", "회원가입 중 오류가 발생했습니다.");
+            return "members/createMemberForm";
+        }
 
         return "redirect:/";
     }

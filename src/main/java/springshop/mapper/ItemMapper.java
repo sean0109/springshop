@@ -7,7 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface ItemMapper {
-    void save(Item item);   // 저장
+    void updateItem(Item item);
+    void insertItem(Item item);
     Item findById(Long id);
     List<Item> findAll();
     Item findByName(String name);

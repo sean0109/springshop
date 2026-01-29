@@ -10,7 +10,10 @@
 
 <div class="container">
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
-    <form role="form" action="/members/new" th:object="${memberForm}" method="post">
+
+    <form role="form" action="/members/new" th:object="${memberForm}" method="post"
+          th:attr="data-has-error=${#fields.hasErrors('name')},
+                   data-error-msg=${#fields.hasErrors('name')} ? ${#fields.errors('name')[0]} : ''">
         <div class="form-group">
             <label th:for="name">이름</label>
             <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요"
@@ -35,5 +38,20 @@
     <br/>
     <div th:replace="~{fragments/footer :: footer}" />
 </div> <!-- /container -->
+
+<script>
+    // DOM 로드 후 실행
+    window.addEventListener('DOMContentLoaded', function() {
+        /*const form = document.querySelector('form[role="form"]');
+        const hasError = form.dataset.hasError === 'true';
+        const errorMsg = form.dataset.errorMsg;
+
+        // 에러가 있으면 alert 표시
+        if (hasError && errorMsg) {
+            alert('이름 필드에 에러가 있습니다!\n' + errorMsg);
+        }*/
+
+    });
+</script>
 </body>
 </html>

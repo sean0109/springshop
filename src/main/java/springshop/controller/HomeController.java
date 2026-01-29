@@ -29,6 +29,8 @@ public class HomeController {
         List<Item> itemList = itemService.findAllItems();
         model.addAttribute("items", itemList);
         return "home";
+
+        // return "home_mobile";   // checkPoint_모바일 화면
     }
 
     @PostMapping("/")

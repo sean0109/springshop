@@ -5,16 +5,19 @@
 <mapper namespace="springshop.mapper.MemberMapper">
 
     <insert id="save" parameterType="Member">
+        <selectKey keyProperty="memberId" resultType="Long" order="BEFORE">
+            SELECT MEMBER_SEQ.NEXTVAL
+        </selectKey>
         INSERT
         INTO
-            MEMBER (ID
+            MEMBER (MEMBER_ID
                    , NAME
                    , CITY
                    , STREET
                    , ZIPCODE
                 )
         VALUES (
-                     member_seq.NEXTVAL
+                     #{memberId}
                    , #{name}
                    , #{address.city}
                    , #{address.street}
@@ -24,7 +27,7 @@
 
     <select id="findById" parameterType="Long" resultMap="memberResultMap">
         SELECT
-            ID
+               MEMBER_ID
              , NAME
              , CITY
              , STREET
@@ -32,12 +35,12 @@
         FROM
             MEMBER
         WHERE
-            id = #{id}
+            MEMBER_ID = #{id}
     </select>
 
     <select id="findAll" resultMap="memberResultMap">
         SELECT
-            ID
+               MEMBER_ID
              , NAME
              , CITY
              , STREET
@@ -48,7 +51,7 @@
 
     <select id="findByName" parameterType="String" resultMap="memberResultMap">
         SELECT
-            ID
+               MEMBER_ID
              , NAME
              , CITY
              , STREET
@@ -60,12 +63,12 @@
     </select>
 
     <resultMap id="memberResultMap" type="Member">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
+        <id property="memberId" column="MEMBER_ID"/>
+        <result property="name" column="NAME"/>
         <association property="address" javaType="springshop.model.Address">
-            <result property="city" column="city"/>
-            <result property="street" column="street"/>
-            <result property="zipcode" column="zipcode"/>
+            <result property="city" column="CITY"/>
+            <result property="street" column="STREET"/>
+            <result property="zipcode" column="ZIPCODE"/>
         </association>
     </resultMap>
 
