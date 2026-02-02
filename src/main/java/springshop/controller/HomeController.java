@@ -28,9 +28,9 @@ public class HomeController {
         // 상품리스트 홈 화면에 출력
         List<Item> itemList = itemService.findAllItems();
         model.addAttribute("items", itemList);
-        return "home";
+        //return "home";
 
-        // return "home_mobile";   // checkPoint_모바일 화면
+        return "home_mobile";   // checkPoint_모바일 화면
     }
 
     @PostMapping("/")
