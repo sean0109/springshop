@@ -26,7 +26,7 @@ import java.util.Map;
 public class OrderController {
 
     private final OrderService orderService;
-        private final MemberService memberService;
+    private final MemberService memberService;
     private final ItemService itemService;
 
     @GetMapping("/order")
