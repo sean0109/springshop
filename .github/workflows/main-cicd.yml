@@ -27,7 +27,7 @@ jobs:
       # 테스트 실행
       - name: Run tests
         #run: ./gradlew clean test --no-daemon
-        run: ./gradlew test --tests "*" --stacktrace
+        run: ./gradlew test --tests "*" --stacktrace  # 모든 로그 출력
 
       - name: Build JAR
         run: ./gradlew build -x test --no-daemon

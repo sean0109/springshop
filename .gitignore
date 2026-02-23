@@ -36,6 +36,7 @@ hs_err_pid*
 # Local config
 application*.properties
 application*.yml
+!src/test/resources/application.yml
 
 # Claude
 .claude/

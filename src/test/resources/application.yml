@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: springshop-test
+
+  # H2 Database for Testing
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  # P6Spy 자동 설정 비활성화 (테스트에서 Oracle 드라이버 간섭 방지) : 서버 환경에서 충돌 방지
+  autoconfigure:
+    exclude:
+      - com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration
+
+  # H2 Console (optional - 디버깅용)
+  h2:
+    console:
+      enabled: true
+
+# MyBatis
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: springshop.model
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: null
+
+# Logging
+logging:
+  level:
+    springshop.mapper: DEBUG
+    org.springframework.jdbc: DEBUG
